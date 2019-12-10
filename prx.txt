@@ -126,7 +126,6 @@ IFACE=$(ip route get 8.8.8.8 | head -1 | cut -d' ' -f5)
 USER=user
 
 [ -z "$PORT" ] && export PORT=8080
-[ -z "$PASSWORD" ] && export PASSWORD=$( cat /dev/urandom | tr --delete --complement 'a-z0-9' | head --bytes=10 )
 
 [ -e /etc/lsb-release ] && source /etc/lsb-release
 [ -e /etc/os-release ] && source /etc/os-release
@@ -137,15 +136,13 @@ if [ "$DISTRIB_ID $DISTRIB_CODENAME" = "Ubuntu xenial" ]; then
 	apt update
 	apt install -y dante-server libpam-pwdfile openssl
 
-	generate_password_file /etc/danted.passwd "$USER" "$PASSWORD"
-
-	generate_pam /etc/pam.d/sockd /etc/danted.passwd
-
 	generate_config_v11 /etc/danted.conf "$IFACE" "$PORT"
 
 	open_ufw_port "$PORT"
 
 	systemctl restart danted.service
+
+	systemctl enable danted.service
 
 	echo "Your socks proxy configuration:"
 	echo "Address: $( get_external_address )"
@@ -157,15 +154,13 @@ elif [ "$DISTRIB_ID $DISTRIB_CODENAME" = "Ubuntu bionic" ]; then
 	apt update
 	apt install -y dante-server libpam-pwdfile openssl
 
-	generate_password_file /etc/danted.passwd "$USER" "$PASSWORD"
-
-	generate_pam /etc/pam.d/sockd /etc/danted.passwd
-
 	generate_config_v14 /etc/danted.conf "$IFACE" "$PORT"
 
 	open_ufw_port "$PORT"
 
 	systemctl restart danted.service
+
+	systemctl enable danted.service
 
 	echo "Your socks proxy configuration:"
 	echo "Address: $( get_external_address )"
@@ -179,12 +174,6 @@ elif [ "$ID $VERSION_ID" = "ol 7.5" -o "$ID $VERSION_ID" = "centos 7" ]; then
 	tar -C / -xzf "$DANTE_TGZ"
 
 	yum install -q -y openssl which bind-utils
-
-	generate_password_file /etc/danted.passwd "$USER" "$PASSWORD"
-
-	generate_password_dbfile /etc/danted.passwd
-
-	generate_pam_userdb /etc/pam.d/sockd /etc/danted.passwd
 
 	generate_config_v14 /etc/sockd.conf "$IFACE" "$PORT"
 
