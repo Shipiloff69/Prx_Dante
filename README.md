@@ -4,4 +4,4 @@
 
 Запустить скрипт curl https://github.com/Shipiloff69/Prx_Dante/blob/master/prx.txt| sudo bash
 
-Сайт androidp1.ru
+Сайт https://androidp1.ru
