@@ -2,6 +2,6 @@
 
 Модификация https://selivan.github.io/socks/ без авторизации
 
-Запустить скрипт curl https://github.com/Shipiloff69/Prx_Dante/blob/master/prx.txt| sudo bash
+Запустить скрипт <code>curl https://github.com/Shipiloff69/Prx_Dante/blob/master/prx.txt | sudo bash</code>
 
 Сайт https://androidp1.ru
