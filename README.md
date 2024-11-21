@@ -4,4 +4,3 @@
 
 Запустить скрипт <code>curl https://androidp1.ru/prx.txt | sudo bash </code>
 
-Сайт https://androidp1.ru
